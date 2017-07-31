@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="InstagramZoomView" customModule="ZoomUICollectionCell" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bIz-4L-XXN">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <subviews>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qnw-jh-ulb">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uvF-mA-Tn8">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DeR-J0-NGP">
+                                            <rect key="frame" x="57" y="173" width="240" height="128"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="uvF-mA-Tn8" firstAttribute="height" secondItem="qnw-jh-ulb" secondAttribute="height" id="6Q8-hK-PrH"/>
+                                <constraint firstItem="uvF-mA-Tn8" firstAttribute="width" secondItem="qnw-jh-ulb" secondAttribute="width" id="FDD-3g-fJH"/>
+                                <constraint firstItem="uvF-mA-Tn8" firstAttribute="top" secondItem="qnw-jh-ulb" secondAttribute="top" id="STm-7X-gsQ"/>
+                                <constraint firstItem="uvF-mA-Tn8" firstAttribute="leading" secondItem="qnw-jh-ulb" secondAttribute="leading" id="glH-Nh-VSz"/>
+                                <constraint firstAttribute="trailing" secondItem="uvF-mA-Tn8" secondAttribute="trailing" id="raW-c7-gMD"/>
+                                <constraint firstAttribute="bottom" secondItem="uvF-mA-Tn8" secondAttribute="bottom" id="tyW-To-m5S"/>
+                            </constraints>
+                        </scrollView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="qnw-jh-ulb" secondAttribute="trailing" id="1ab-DM-SNA"/>
+                        <constraint firstAttribute="bottom" secondItem="qnw-jh-ulb" secondAttribute="bottom" id="8MJ-Gu-lTJ"/>
+                        <constraint firstItem="qnw-jh-ulb" firstAttribute="leading" secondItem="bIz-4L-XXN" secondAttribute="leading" id="NVd-nn-lw8"/>
+                        <constraint firstItem="qnw-jh-ulb" firstAttribute="top" secondItem="bIz-4L-XXN" secondAttribute="top" id="W0b-ed-tq9"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="bIz-4L-XXN" secondAttribute="bottom" id="3Xr-H2-pga"/>
+                <constraint firstAttribute="trailing" secondItem="bIz-4L-XXN" secondAttribute="trailing" id="LLB-Vo-tx7"/>
+                <constraint firstItem="bIz-4L-XXN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="c8M-Gx-BOu"/>
+                <constraint firstItem="bIz-4L-XXN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nAA-73-4sk"/>
+            </constraints>
+            <connections>
+                <outlet property="ivAvatar" destination="DeR-J0-NGP" id="dZm-gT-ICL"/>
+                <outlet property="scrollMain" destination="qnw-jh-ulb" id="gQo-gl-qTV"/>
+            </connections>
+        </view>
+    </objects>
+</document>
