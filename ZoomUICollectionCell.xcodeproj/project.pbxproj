@@ -18,6 +18,7 @@
 		509A64BB1F2D94D10043D912 /* ZoomUICollectionCellUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A64BA1F2D94D10043D912 /* ZoomUICollectionCellUITests.swift */; };
 		509A64CA1F2D95020043D912 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509A64C81F2D95020043D912 /* ImageCell.swift */; };
 		509A64CB1F2D95020043D912 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 509A64C91F2D95020043D912 /* ImageCell.xib */; };
+		C65E859D1F2EEC9800620A1D /* FirstController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C65E859C1F2EEC9800620A1D /* FirstController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		509A64BC1F2D94D10043D912 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		509A64C81F2D95020043D912 /* ImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		509A64C91F2D95020043D912 /* ImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
+		C65E859C1F2EEC9800620A1D /* FirstController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				509A64A61F2D94D10043D912 /* Info.plist */,
 				509A64C81F2D95020043D912 /* ImageCell.swift */,
 				509A64C91F2D95020043D912 /* ImageCell.xib */,
+				C65E859C1F2EEC9800620A1D /* FirstController.swift */,
 			);
 			path = ZoomUICollectionCell;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			files = (
 				501903F71F2DD6D2008C1445 /* InstagramZoomView.swift in Sources */,
 				509A649D1F2D94D10043D912 /* ViewController.swift in Sources */,
+				C65E859D1F2EEC9800620A1D /* FirstController.swift in Sources */,
 				509A649B1F2D94D10043D912 /* AppDelegate.swift in Sources */,
 				509A64CA1F2D95020043D912 /* ImageCell.swift in Sources */,
 			);

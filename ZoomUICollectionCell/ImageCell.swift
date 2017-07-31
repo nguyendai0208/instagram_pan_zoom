@@ -8,12 +8,25 @@
 
 import UIKit
 
+@objc protocol ImageCellDelegate : NSObjectProtocol {
+    @objc optional func ImageCell_BeginZoom(_ cell : ImageCell)
+    @objc optional func ImageCell_EndZoom(_ cell : ImageCell)
+}
+
 class ImageCell: UICollectionViewCell {
     
     @IBOutlet weak fileprivate var scrollMain : UIScrollView!
     
     @IBOutlet weak fileprivate var ivAvatar : UIImageView!
-    var controller : ViewController?
+    var delegate  : ImageCellDelegate?
+    
+    fileprivate var imgContent : UIImage?{
+        didSet{
+            if imgContent != nil {
+                self.ivAvatar.image = nil
+            }
+        }
+    }
     
     fileprivate var instagramZoom : InstagramZoomView?
     
@@ -23,99 +36,103 @@ class ImageCell: UICollectionViewCell {
         self.ivAvatar.isUserInteractionEnabled = true
         
         let panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(panGesture(_:)))
-        panGesture.cancelsTouchesInView = false
         panGesture.delegate = self
         self.ivAvatar.addGestureRecognizer(panGesture)
+        panGesture.cancelsTouchesInView = false
         
         let gesture = UIPinchGestureRecognizer.init(target: self, action: #selector(pinchZoom(_:)))
-        gesture.cancelsTouchesInView = false
         gesture.delegate = self
         self.ivAvatar.addGestureRecognizer(gesture)
+        gesture.cancelsTouchesInView = false
+    }
+    
+    fileprivate func beginGesture(_ gesture : UIGestureRecognizer){
+        if self.instagramZoom != nil{
+            self.endGesture()
+        }
+        if let iv = gesture.view as? UIImageView {
+            self.instagramZoom = InstagramZoomView.instance
+            let frame = iv.convert(iv.frame, to: appDelegate.window)
+            self.instagramZoom?.showAt(frame, iv.image)
+            
+            self.imgContent = iv.image
+        }
+        if self.delegate != nil &&
+            self.delegate!.responds(to: #selector(ImageCellDelegate.ImageCell_BeginZoom(_:))){
+            self.delegate!.ImageCell_BeginZoom!(self)
+        }
+    }
+    
+    fileprivate func endGesture(){
+        if self.instagramZoom != nil{
+            self.instagramZoom?.hiden()
+            self.instagramZoom = nil
+            
+            self.ivAvatar.image = self.imgContent
+            self.imgContent = nil
+            
+        }
+        if self.delegate != nil &&
+            self.delegate!.responds(to: #selector(ImageCellDelegate.ImageCell_EndZoom(_:))){
+            self.delegate!.ImageCell_EndZoom!(self)
+        }
     }
 
     //MAR: Pinch gesture
     func pinchZoom(_ gesture : UIPinchGestureRecognizer) {
-        print("zoom image")
-        if let ivZoom = gesture.view as? UIImageView{
-            switch gesture.state {
-            case .possible:
-                print("possible zoom")
-                break
-                
-            case .failed:
-                print("failt zoom")
-                break
-                
-            case .began:
-                print("Begin zoom")
-                break
-                
-            case .changed:
-                print("Change \(gesture.scale)")
-                self.instagramZoom?.zoomWith(gesture.scale)
-                break
-                
-            case .ended:
-                print("End zoom")
-                self.instagramZoom?.hiden()
-                self.instagramZoom = nil
-                break
-                
-                
-            default:
-                break
-            }
+        switch gesture.state {
+        case .began:
+            self.beginGesture(gesture)
+            break
+            
+        case .changed:
+            
+            let currentScale : CGFloat = gesture.view?.layer.value(forKeyPath: "transform.scale.x") as! CGFloat
+            let minScale : CGFloat = 0.5
+            let maxScale : CGFloat = 5.0
+            let zoomSpeed : CGFloat = 0.5
+            
+            var deltaScale = gesture.scale
+            
+            deltaScale = (deltaScale - 1)*zoomSpeed + 1
+            deltaScale = min(deltaScale, maxScale/currentScale)
+            deltaScale = max(deltaScale, minScale / currentScale)
+            
+            self.instagramZoom?.zoomWith(deltaScale)
+            gesture.scale = 1
+            break
+            
+        case .ended:
+            self.endGesture()
+            break
+        default:
+            break
         }
     }
     func panGesture(_ panGestuge : UIPanGestureRecognizer) {
-        if let instagram = self.instagramZoom{
+        switch panGestuge.state {
+        case .began:
+            break
+            
+        case .changed:
             let view = panGestuge.view!
+            
             let translation = panGestuge.translation(in: view.superview)
+            self.instagramZoom?.moveByDistance(translation.x , translation.y)
+            panGestuge.setTranslation(CGPoint.zero, in: self)
+            break
             
-            let point = CGPoint.init(x: view.center.x + translation.x, y: view.center.y + translation.y)
-            instagram.moveToView(point)
-            
-            switch panGestuge.state {
-            case .began:
-                print("pan begin")
-                break
-                
-            case .ended:
-                print("pan end")
-                instagram.hiden()
-                break
-                
-            case .changed:
-                print("pan change")
-                break
-            default:
-                break
-            }
+        case .ended:
+            self.endGesture()
+            break
+        default:
+            break
         }
     }
 }
 
 extension ImageCell : UIGestureRecognizerDelegate{
-    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let ivZoom = gestureRecognizer.view as? UIImageView {
-            let frame = ivZoom.convert(ivZoom.frame, to: nil)
-            self.instagramZoom = InstagramZoomView.instance
-            self.instagramZoom?.showAt(frame, ivZoom.image)
-        }
-        
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
-    }
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("Move")
-    }
-}
-
-extension ImageCell : UIScrollViewDelegate{
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return nil
-    }
-    
-    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        self.controller?.performBeginZoomImage(self.ivAvatar)
     }
 }

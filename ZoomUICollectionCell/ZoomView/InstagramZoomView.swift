@@ -18,54 +18,35 @@ class InstagramZoomView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.ivAvatar.isUserInteractionEnabled = true
-        
-        self.scrollMain.maximumZoomScale = 6.0
-        self.scrollMain.minimumZoomScale = 1.0
-        self.scrollMain.delegate = self
-        
-        let panGesture = UIPanGestureRecognizer.init(target: self, action: #selector(handlPan(_:)))
-        self.ivAvatar.addGestureRecognizer(panGesture)
-        
     }
     
-    func handlPan(_ panGesture : UIPanGestureRecognizer){
-        print("panges \(panGesture.location(in: self.ivAvatar.superview))")
-        self.ivAvatar.center = panGesture.location(in: self.ivAvatar.superview)
-    }
-    
-    func showAt(_ frame : CGRect, _ image : UIImage?) {
+    func showAt(_ frame : CGRect, _ image : UIImage?, handler complete:(()->())? = nil) {
         self.ivAvatar.frame = frame
-        self.scrollMain.contentSize = frame.size
-//        self.ivAvatar.image = image
+        self.ivAvatar.image = image
         let appDelagete = UIApplication.shared.delegate as! AppDelegate
         self.frame = CGRect.init(x: 0, y: 0, width: (appDelagete.window?.bounds.size.width)!, height: (appDelagete.window?.bounds.size.height)!)
         appDelagete.window?.addSubview(self)
+        
+        complete?()
     }
     
     func zoomWith(_ scale : CGFloat) {
-        self.scrollMain.zoomScale = scale
+        let zoomTranform = self.ivAvatar.transform.scaledBy(x: scale, y: scale)
+        self.ivAvatar.transform = zoomTranform
+        self.backgroundColor = UIColor.black.withAlphaComponent(abs(alpha - 1))
     }
     
-    func moveToView(_ center : CGPoint) {
-        print("Center : \(center)")
-        self.ivAvatar.center = center
+    func  moveByDistance(_ x:CGFloat, _ y : CGFloat) {
+        var center = self.ivAvatar.center
+        center.x = center.x + x
+        center.y = center.y + y
+         self.ivAvatar.center = center
     }
     
-    func hiden() {
+    func hiden(_ complete:(()->())? = nil) {
         self.removeFromSuperview()
-    }
-}
-extension InstagramZoomView : UIScrollViewDelegate{
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.ivAvatar
-    }
-
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print("instagram endDragging")
-//        self.hiden()
-    }
-    
-    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        print("instagram scrollViewDidEndScrollingAnimation")
+        if complete != nil {
+            complete!()
+        }
     }
 }
